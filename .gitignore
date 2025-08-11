@@ -1,0 +1,25 @@
+# Rust
+**/target
+**/Cargo.lock
+
+# TypeScript
+**/package-lock.json
+**/node_modules/
+**/build/
+**/yarn.lock
+**/pnpm-lock.yaml
+**/.tsimp
+
+# Python
+**/__pycache__/
+**/.pytest_cache/
+**/.venv/
+**/build/
+**/*.wasm
+
+# Frontend
+**/dist/
+**/.parcel-cache
+**/.next
+
+.env

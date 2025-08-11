@@ -1,0 +1,21 @@
+{
+  "name": "hello-near-examples",
+  "type": "module",
+  "packageManager": "yarn@4.9.2",
+  "dependencies": {
+    "@near-js/accounts": "^2.2.5",
+    "@near-js/crypto": "^2.2.5",
+    "@near-js/providers": "^2.2.5",
+    "@near-js/signers": "^2.2.5",
+    "@near-js/tokens": "^2.2.5",
+    "@near-js/transactions": "^2.2.5",
+    "@near-js/utils": "^2.2.5",
+    "dotenv": "^17.0.1",
+    "near-seed-phrase": "^0.2.1"
+  },
+  "scripts": {
+    "build-contract": "cd contract && cargo near build non-reproducible-wasm",
+    "test": "node ./scripts/test.js",
+    "full-test": "yarn build-contract && DEPLOY_CONTRACT=true yarn test"
+  }
+}
