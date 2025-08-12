@@ -79,12 +79,12 @@ impl Contract {
                 // get bytes from signature
                 let r_bytes = hex::decode(signature_response.big_r.affine_point)
                     .expect("failed to decode affine_point to bytes");
-                let s_bytes = hex::decode(signature_response.s.scalar)
-                    .expect("failed to decode scalar to bytes");
+                // let s_bytes = hex::decode(signature_response.s.scalar)
+                //     .expect("failed to decode scalar to bytes");
+                // let hash = env::sha256(&[r_bytes, s_bytes].concat());
 
-                let hash = env::sha256(&[r_bytes, s_bytes].concat());
-                let bytes: &[u8; 16] = unsafe { slice_to_array_unchecked(&hash[0..16]) };
-                let rng = u128::from_le_bytes(*bytes);
+                let bytes: &[u8; 1] = unsafe { slice_to_array_unchecked(&r_bytes[0..1]) };
+                let rng = u8::from_le_bytes(*bytes);
                 let result = rng % 2 == 0;
 
                 log!("flip result: {:?}", result);
@@ -107,6 +107,5 @@ impl Contract {
 }
 
 unsafe fn slice_to_array_unchecked<T, const N: usize>(slice: &[T]) -> &[T; N] {
-    debug_assert!(slice.len() == N);
     &*(slice as *const _ as *const _)
 }

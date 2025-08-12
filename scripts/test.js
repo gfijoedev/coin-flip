@@ -101,11 +101,22 @@ async function test() {
 
   // test calls
 
+  let trueCount = 0,
+    falseCount = 0;
+
   while (true) {
-    await call('flip', {}, parseNearAmount('0.1'));
+    const flipRes = await call('flip', {}, parseNearAmount('0.1'));
+    if (flipRes) {
+      trueCount += 1;
+    } else {
+      falseCount += 1;
+    }
+    console.log('percent true/false', trueCount / falseCount);
+
+    //stats
     const [flips, pool, paid] = await view('stats', {});
     console.log(
-      'profit: ',
+      'profit:',
       formatNearAmount(
         (
           BigInt(flips) * BigInt(parseNearAmount('0.1')) -
