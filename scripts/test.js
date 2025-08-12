@@ -8,7 +8,7 @@ import { Account } from '@near-js/accounts';
 import { JsonRpcProvider } from '@near-js/providers';
 import { KeyPairSigner } from '@near-js/signers';
 import { KeyPair } from '@near-js/crypto';
-import { parseNearAmount } from '@near-js/utils';
+import { parseNearAmount, formatNearAmount } from '@near-js/utils';
 import { parseSeedPhrase } from 'near-seed-phrase';
 
 const wait = async (s = 500) => await new Promise((r) => setTimeout(r, s));
@@ -59,6 +59,7 @@ async function view(methodName, args) {
   try {
     const res = await provider.callFunction(NEAR_CONTRACT_ID, methodName, args);
     console.log('View result:', res);
+    return res;
   } catch (e) {
     console.log('Error calling', methodName, e);
   }
@@ -75,6 +76,7 @@ async function call(methodName, args, deposit = 0n, gas = 30000000000000n) {
       gas,
     });
     console.log('Call result:', res === '' ? 'no return value' : res);
+    return res;
   } catch (e) {
     console.log('Error calling', methodName, e);
   }
@@ -101,7 +103,16 @@ async function test() {
 
   while (true) {
     await call('flip', {}, parseNearAmount('0.1'));
-    await view('stats', {});
+    const [flips, pool, paid] = await view('stats', {});
+    console.log(
+      'profit: ',
+      formatNearAmount(
+        (
+          BigInt(flips) * BigInt(parseNearAmount('0.1')) -
+          BigInt(paid)
+        ).toString(),
+      ),
+    );
   }
 }
 
