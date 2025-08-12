@@ -74,7 +74,7 @@ async function call(methodName, args, deposit = 0n, gas = 30000000000000n) {
       deposit,
       gas,
     });
-    console.log('Call result:', res.length ? res : res === '');
+    console.log('Call result:', res === '' ? 'no return value' : res);
   } catch (e) {
     console.log('Error calling', methodName, e);
   }
@@ -99,7 +99,10 @@ async function test() {
 
   // test calls
 
-  await call('flip', {});
+  while (true) {
+    await call('flip', {}, parseNearAmount('0.1'));
+    await view('stats', {});
+  }
 }
 
 test();
